@@ -1,0 +1,166 @@
+﻿@page "/Services"
+
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager UriHelper
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@using System.Net.Http
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+@inject IJSRuntime JsRuntime
+
+@inject NavigationManager NavigationManager
+
+@*@attribute [Authorize]*@
+
+
+
+<h1>Bienvenido, @Username!</h1>
+Autenticado Exitosamente a traves del servicio provisto por Auth0.
+<br />
+<br />
+<div><strong>Ejemplo alta de Producto Firebase y SQL Server</strong></div>
+<br />
+<br />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="path/to/file/bootstrap.min.css">
+
+
+@*<div class="container-fluid">
+        <div class="form-group row mb-12">
+            <div class="col-sm-12">
+                <button class="btn btn-secondary btn-block" @onclick="Respaldo">Respaldos</button>
+            </div>
+        </div>
+    </div>*@
+
+
+
+<button class="btn btn-primary" @onclick="AddProduct">Agregar Producto Nuevo</button>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <title>TFI 2021 - Volando E-Shop</title>
+</head>
+
+<SfGrid DataSource="@Orders" AllowPaging="true"
+        AllowSorting="true"
+        AllowFiltering="true"
+        AllowGrouping="true">
+    <GridPageSettings PageSize="5"></GridPageSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Order.OrderID)"
+                    HeaderText="Order ID"
+                    TextAlign="TextAlign.Right"
+                    Width="120">
+        </GridColumn>
+        <GridColumn Field=@nameof(Order.CustomerID)
+                    HeaderText="Customer Name"
+                    Width="150">
+        </GridColumn>
+        <GridColumn Field=@nameof(Order.OrderDate)
+                    HeaderText=" Order Date"
+                    TextAlign="TextAlign.Right"
+                    Format="d"
+                    Type="ColumnType.Date"
+                    Width="130">
+        </GridColumn>
+        <GridColumn Field=@nameof(Order.Freight)
+                    HeaderText="Freight"
+                    Format="C2"
+                    TextAlign="TextAlign.Right"
+                    Width="120">
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
+@code
+
+{
+
+    string URLProducto = "https://localhost:44303/api/Producto";
+
+    public List<Producto> listaProductos = new List<Producto>();
+
+
+
+
+    protected async Task AddProduct()
+    {
+        Producto producto = new Producto();
+
+        producto.idProducto = 324;
+        producto.createdBy = "gabrieltaglioretti@gmail.com";
+        producto.createdOn = DateTime.Now;
+        producto.descripcion = "Producto Nuevo";
+        producto.marca = "TFI2021";
+
+        var respuesta = await Http.PostAsJsonAsync(URLProducto, producto);
+
+        await JsRuntime.InvokeVoidAsync("alert", "Producto Cargado con Exito!"); // Alert
+
+    }
+
+
+    private string Username = "Anonymous User";
+    private string Picture = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthState.GetAuthenticationStateAsync();
+
+        Username = state.User.Claims
+        .Where(c => c.Type.Equals("name"))
+        .Select(c => c.Value)
+        .FirstOrDefault() ?? string.Empty;
+
+
+
+        Picture = state.User.Claims
+
+        .Where(c => c.Type.Equals("picture"))
+        .Select(c => c.Value)
+        .FirstOrDefault() ?? string.Empty;
+
+        await base.OnInitializedAsync();
+    }
+
+
+
+
+    public List<Order> Orders { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Orders = Enumerable.Range(1, 15).Select(x => new Order()
+        {
+            OrderID = 1000 + x,
+            CustomerID = (new string[] { "ALFKI", "ANANTR", "ANTON", "BLONP", "BOLID" })
+            [new Random().Next(5)],
+            Freight = 2.1 * x,
+            OrderDate = DateTime.Now.AddDays(-x)
+        }).ToList();
+    }
+
+    public class Order
+    {
+        public int? OrderID { get; set; }
+
+        public string CustomerID { get; set; }
+
+        public DateTime? OrderDate { get; set; }
+
+        public double? Freight { get; set; }
+    }
+
+
+
+
+}

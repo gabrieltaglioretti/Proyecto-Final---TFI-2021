@@ -1,0 +1,203 @@
+﻿@page "/"
+
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager UriHelper
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@*@attribute [Authorize]*@
+
+<style>
+
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        filter: invert(100%);
+    }
+</style>
+
+<br />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<head>
+    <meta charset="utf-8">
+    <title>TFI 2021 - Volando E-Shop</title>
+</head>
+<div class="container">
+    <div class="row">
+        <div class="text-center">
+            <BlazorStrap.BSCarousel NumberOfItems="@Items.Count">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < Items.Count; i++)
+                    {
+
+                        <BlazorStrap.BSCarouselItem Src="@Items[i].Source" Alt="@Items[i].Alt" style=""></BlazorStrap.BSCarouselItem>
+                    }
+                </div>
+                <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Previous" NumberOfItems="@Items.Count"></BlazorStrap.BSCarouselControl>
+                <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Next" NumberOfItems="@Items.Count"></BlazorStrap.BSCarouselControl>
+            </BlazorStrap.BSCarousel>
+        </div>
+        <br><hr><br>
+    </div>
+</div>
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<div class="container">
+    <h3 class="text-center h3">Nuestros Productos</h3><hr /><br />
+    <div class="row">
+        <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+            <img src="Pics\Index\001.jpg" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+            <img src="Pics\Index\004.jpg" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+        </div>
+        <div class="col-lg-4 mb-4 mb-lg-0">
+            <img src="Pics\Index\003.jpg" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+            <img src="Pics\Index\006.jpg" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+        </div>
+        <div class="col-lg-4 mb-4 mb-lg-0">
+            <img src="Pics\Index\005.jpg" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+            <img src="Pics\Index\002.jpg" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private string Username = "Anonymous User";
+    private string Picture = "";
+
+    string NameFromSessionStorage { get; set; }
+    int ItemsInSessionStorage { get; set; }
+    //string Name { get; set; }
+    bool ItemExist { get; set; }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        await SaveName(Guid.NewGuid().ToString());
+    //    }
+    //}
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        GetNameFromSessionStorage();        
+
+        var state = await AuthState.GetAuthenticationStateAsync();
+
+        Username = state.User.Claims
+                    .Where(c => c.Type.Equals("name"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
+
+        Picture = state.User.Claims
+                    .Where(c => c.Type.Equals("picture"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
+
+
+        await base.OnInitializedAsync();
+    }
+
+
+    async Task SaveName(string name)
+    {
+        await sessionStorage.SetItemAsync("name", name);
+        //await GetNameFromSessionStorage();
+        //await GetSessionStorageLength();
+        name = "";
+    }
+
+    async Task GetNameFromSessionStorage()
+    {
+        NameFromSessionStorage = await sessionStorage.GetItemAsync<string>("name");
+
+        if (string.IsNullOrEmpty(NameFromSessionStorage))
+        {
+            //NameFromSessionStorage = "Nothing Saved";
+            SaveName(Guid.NewGuid().ToString());
+
+        }
+    }
+    async Task RemoveName()
+    {
+        await sessionStorage.RemoveItemAsync("name");
+        await GetNameFromSessionStorage();
+        await GetSessionStorageLength();
+    }
+    async Task ClearSessionStorage()
+    {
+        Console.WriteLine("Calling Clear...");
+        await sessionStorage.ClearAsync();
+        Console.WriteLine("Getting name from session storage...");
+        await GetNameFromSessionStorage();
+        Console.WriteLine("Calling Get Length...");
+        await GetSessionStorageLength();
+    }
+    async Task GetSessionStorageLength()
+    {
+        Console.WriteLine(await sessionStorage.LengthAsync());
+        ItemsInSessionStorage = await sessionStorage.LengthAsync();
+        ItemExist = await sessionStorage.ContainKeyAsync("name");
+    }
+    async Task TestTimespan()
+    {
+        var timespan = await sessionStorage.GetItemAsync<TimeSpan>("timespan");
+        if(timespan == TimeSpan.Zero)
+        {
+            await sessionStorage.SetItemAsync("timespan", new TimeSpan(0,15,0));
+            timespan = await sessionStorage.GetItemAsync<TimeSpan>("timespan");
+        }
+    }
+
+}
+
+
+@code
+{
+    IList<Item> Items = new List<Item>
+{
+        new Item
+        {
+            Source="https://i.postimg.cc/ZY7X9hJF/imagen1.jpg",
+            Alt="First Slide",
+            Caption="Slide 1",
+            Header="Slide 1 Header"
+        },
+
+        new Item
+        {
+            Source="https://i.postimg.cc/TYKFgHw8/imagen2.jpg",
+            Alt="Firs2t Slide",
+            Caption="Slide 21",
+            Header="Slide 1 He2ader"
+        },
+
+        new Item
+        {
+            Source="https://i.postimg.cc/yY25PXgD/imagen3.jpg",
+            Alt="Fir24st Slide",
+            Caption="Slide 21",
+            Header="Slide 1 H3eader"
+        },
+
+        new Item
+        {
+            Source="https://i.postimg.cc/JzJFdDZP/imagen4.jpg",
+            Alt="Fir24st Slide",
+            Caption="Slide 21",
+            Header="Slide 1 H3eader"
+        }
+    };
+    class Item
+    {
+        public string Source { get; set; } = "";
+        public string Alt { get; set; } = "";
+        public string Caption { get; set; } = "";
+        public string Header { get; set; } = "";
+    }
+
+}
+

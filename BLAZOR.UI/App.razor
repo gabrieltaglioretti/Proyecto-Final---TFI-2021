@@ -1,0 +1,18 @@
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <p>Determinando estado de sesi&oacute;n, por favor espere...</p>
+                </Authorizing>
+                <NotAuthorized>
+                    <h1>Ups!</h1>
+                    <p>No est&aacute;s autorizado para acceder a esta p&aacute;gina. Necesit&aacute;s loguearte!</p>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <p>Ups!, no encontramos nada.</p>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

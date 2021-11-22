@@ -1,0 +1,307 @@
+﻿@page "/Cart/{id:int}"
+
+@using System.Net.Http
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject NavigationManager UriHelper
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager UriHelper
+@inject IHttpContextAccessor httpContextAccessor
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+
+@using MercadoPago.Config;
+@using MercadoPago.Client.Preference;
+@using MercadoPago.Resource.Preference;
+
+
+@using SERVICIOS.BITACORA.DOMINIO
+
+<style>
+    .payment-info {
+        background: #343a40;
+        padding: 10px;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: bold
+    }
+
+    .product-details {
+        padding: 10px
+    }
+
+    body {
+        background: #eee
+    }
+
+    .cart {
+        background: #fff
+    }
+
+    .p-about {
+        font-size: 12px
+    }
+
+    .table-shadow {
+        -webkit-box-shadow: 5px 5px 15px -2px rgba(0, 0, 0, 0.42);
+        box-shadow: 5px 5px 15px -2px rgba(0, 0, 0, 0.42)
+    }
+
+    .type {
+        font-weight: 400;
+        font-size: 10px
+    }
+
+    label.radio {
+        cursor: pointer
+    }
+
+        label.radio input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            pointer-events: none
+        }
+
+        label.radio span {
+            padding: 1px 12px;
+            border: 2px solid #ada9a9;
+            display: inline-block;
+            color: #8f37aa;
+            border-radius: 3px;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 300
+        }
+
+        label.radio input:checked + span {
+            border-color: #fff;
+            background-color: blue;
+            color: #fff
+        }
+
+    .credit-inputs {
+        background: rgb(102, 102, 221);
+        color: #fff !important;
+        border-color: rgb(102, 102, 221)
+    }
+
+        .credit-inputs::placeholder {
+            color: #fff;
+            font-size: 13px
+        }
+
+    .credit-card-label {
+        font-size: 9px;
+        font-weight: 300
+    }
+
+    .form-control.credit-inputs:focus {
+        background: rgb(102, 102, 221);
+        border: rgb(102, 102, 221)
+    }
+
+    .line {
+        border-bottom: 1px solid rgb(102, 102, 221)
+    }
+
+    .information span {
+        font-size: 12px;
+        font-weight: 500
+    }
+
+    .information {
+        margin-bottom: 5px
+    }
+
+    .items {
+        -webkit-box-shadow: 5px 5px 4px -1px rgba(0, 0, 0, 0.25);
+        box-shadow: 5px 5px 4px -1px rgba(0, 0, 0, 0.08)
+    }
+
+    .spec {
+        font-size: 11px
+    }
+</style>
+<br />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<head>
+    <meta charset="utf-8">
+    <title>TFI 2021 - Volando E-Shop</title>
+</head>
+
+@if (listadeitems == null)
+{
+    <div class="container">
+        <h1>Carrito Compras</h1>
+        <hr />
+        <p><em>Cargando...</em></p>
+    </div>
+}
+else
+{
+    <div class="container">
+        <h1>Carrito Compras</h1><hr />
+        <div class="container mt-5 p-3 rounded cart">
+            <div class="row no-gutters">
+                <div class="col-md-8">
+                    <div class="product-details mr-2">
+                        <div class="d-flex flex-row align-items-center"><i class="fa fa-long-arrow-left"></i><a href="Productos"><span class="ml-2">Continuar Comprando</span></a></div>
+                        <hr>
+                        <h6 class="mb-0"><strong>Productos</strong></h6>
+                        <div class="d-flex justify-content-between">
+                            @*<span class="lead">Usted tiene 'cantidad' Productos es su carrito</span>*@
+                            <div class="d-flex flex-row align-items-center">
+                                <span class="text-black-50">Ordenar por:</span>
+                                <div class="price ml-2"><span class="mr-1">Precio</span><i class="fa fa-angle-down"></i></div>
+                            </div>
+                        </div>
+                        @foreach (var item in listadeitems)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded">
+                                <div class="d-flex flex-row">
+                                    <img class="rounded" src="@item.producto.picturePath" width="40">
+                                    <div class="ml-2"><span class="font-weight-bold d-block">@item.producto.nombre</span><span class="spec">@item.producto.descripcion</span></div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center">
+                                    <span class="d-block">$@item.producto.precio</span><span class="d-block ml-5 font-weight-bold"></span>
+                                    <button class="btn btn-sm" id2="@item.idCarritoItem" @onclick="@(e => Delete(item.idCarritoItem))"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="payment-info">
+                        <div class="d-flex justify-content-between align-items-center"><span>Metodo Pago</span><img class="rounded" src="https://i.imgur.com/WU501C8.jpg" width="30"></div>
+                        <hr class="line">
+                        <div class="d-flex justify-content-between information"><span>Subtotal</span><span>$@total</span></div>
+                        <div class="d-flex justify-content-between information"><span>Envío</span><span>$@envio</span></div>
+                        <div class="d-flex justify-content-between information">
+                            <span>Total(Incl. imp.)</span><span>$@total</span>
+                        </div>
+                        <button class="btn btn-primary btn-block d-flex justify-content-between mt-3" type="button"><span>$@total</span></button>                        
+                        <a class="btn btn-primary btn-block d-flex justify-content-between mt-3" role="button" @onclick=Pagar><span>Pagar con MP<i class="fa fa-long-arrow-right ml-1"></i></span></a>
+                        <br>
+                        <div class="taglio"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code{
+
+
+    [Parameter]
+    public int id { get; set; }
+
+
+    private IEnumerable<Carrito> carritos;
+    Carrito carrito = new Carrito();
+    List<CarritoItem> listadeitems = new List<CarritoItem>();
+
+    private IEnumerable<Pago> pagos;
+    private IEnumerable<Pedido> pedidos;
+
+    Pedido pedido = new Pedido();
+    Pago pago = new Pago();
+
+    public decimal envio = 999;
+    public decimal total = 0;
+    string preferenceID = "";
+
+
+    protected override void OnInitialized() => StartTimerAsync();
+
+    protected override async Task OnInitializedAsync()
+
+    {
+        //ME TRAIGO EL CARRITO DEL USUARIO CON SU LISTA DE ITEMS (DESDE UNA VISTA - LINEAS DUPLICADAS)
+        carritos = await Http.GetFromJsonAsync<List<Carrito>>(ApplicationSettings.Current.connApiCarrito + "/" + id);
+
+        AgregarItems(carritos.ToList());       
+
+
+    }
+
+    private async Task AgregarItems(List<Carrito> carritos)
+    {
+        foreach (var item in carritos)
+        {
+            foreach (var item1 in item.carritoItems)
+            {
+                listadeitems = item.carritoItems;
+                carrito.carritoItems = listadeitems;
+                carrito.idSesion = item.idSesion;
+                carrito.idCarrito = item.idCarrito;
+            }      
+        }
+
+        total = carrito.Total + envio;
+
+    }
+
+
+    private async Task Pagar()
+    {
+        //ARMAR EL PEDIDO:
+
+        pedido.fechaHora = DateTime.Now;
+        pedido.idCarrito = carrito.idCarrito;
+        pedido.idUsuario = carrito.idSesion;
+        pedido.estado = Pedido.EstadoPedido.PENDIENTE_PAGO;
+
+        var respuesta = await Http.PostAsJsonAsync<Pedido>(ApplicationSettings.Current.connApiPedido, pedido);
+
+        Item item = new Item();
+        item.title = "Productos Volando";//listadeitems.First().producto.nombre;
+        item.quantity = listadeitems.First().cantidad;
+        item.unit_price = Convert.ToInt32(listadeitems.First().producto.precio);//mandar el total
+
+        pedidos = await Http.GetFromJsonAsync<List<Pedido>>(ApplicationSettings.Current.connApiPedido);
+
+        pedido = pedidos.Where<Pedido>((x => x.idUsuario == carrito.idSesion)).ToList().First();
+
+        item.id = Convert.ToString(pedido.idPedido);
+
+        var respuesta2 = await Http.PostAsJsonAsync<Item>(ApplicationSettings.Current.connApiPago, item);
+
+        pagos = await Http.GetFromJsonAsync<List<Pago>>(ApplicationSettings.Current.connApiPago);
+        pago = pagos.First();
+
+        await JsRuntime.InvokeVoidAsync("getPreferenceId", pago.idPago);
+    }
+
+
+    public async void StartTimerAsync()
+    {
+        while (true)
+        {
+            this.StateHasChanged();
+            await Task.Delay(1);
+        }
+    }
+
+    private async void Delete(int idCarritoItem)
+    {
+        listadeitems.Remove(listadeitems.Where(x => x.idCarritoItem == idCarritoItem).First());
+        var respuestadelete = await Http.DeleteAsync(ApplicationSettings.Current.connApiCarrito + "/" + idCarritoItem);
+        total = carrito.Total + envio;
+    }
+
+
+
+    //dar de alta el pedido...
+    //ir a la pagina de gracias con los detalles del pedido...
+
+}
+
+

@@ -1,0 +1,59 @@
+﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager UriHelper
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<div class="page">
+    @*<div class="sidebar">
+            <NavMenu />
+        </div>*@
+
+    <div class="main">
+        <TopNavBar></TopNavBar>
+        <div class="top-row px-4">
+            <AccessControl />
+            <a href="Pedidos" target="_blank">Mi Cuenta</a>
+            @if (@Picture.Length > 1)
+            {
+    <img src="@Picture" style="height:68px; width:68px; padding:10px" class="rounded-circle" alt="perfil"> }
+                else
+                {
+    <img src="Pics\userDummy.png" style="height:48px; width:48px; padding:10px; opacity:70%" class="rounded-circle" alt="perfil">}
+            
+        </div>
+        @*<a href="logout" style="margin-left: 0px">Desconectarse</a>*@
+        <div class="content px-4">
+            @Body
+        </div>
+        
+        
+            @*<span class="oi oi-globe" aria-hidden="true"></span>               
+            <IdiomaManager />*@
+        
+        <Footer></Footer>
+
+    </div>
+</div>
+
+@code{ private string Username = "Anonymous User";
+            private string Picture = "https://img2.pngio.com/iconos-de-computadora-usuario-simbolo-simbolo-diverso-negro-usuario-png-920_512.png";
+
+            protected override async Task OnInitializedAsync()
+            {
+                var state = await AuthState.GetAuthenticationStateAsync();
+
+                Username = state.User.Claims
+                    .Where(c => c.Type.Equals("name"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
+
+                Picture = state.User.Claims
+                            .Where(c => c.Type.Equals("picture"))
+                            .Select(c => c.Value)
+                            .FirstOrDefault() ?? string.Empty;
+
+                await base.OnInitializedAsync();
+            } }
+
+

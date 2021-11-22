@@ -1,0 +1,56 @@
+﻿@page "/1"
+
+
+using DOMINIO;
+@using System.Net.Http
+@using System.Net.Http.Json
+
+@inject HttpClient Http
+
+<h3>Vista de Clientes</h3>
+
+<EditForm Model="@producto">
+    <table class="table">
+
+        <tr>
+            <td>CUIT</td>
+            <td><input class="form-control col-sm-4" type="number" @bind="producto.nombre" /></td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="button" value="Guardar producto" @onclick="Grabar" />
+            </td>
+        </tr>
+
+    </table>
+
+
+</EditForm>
+
+
+<form action="../../form-result.php" method="post" target="_blank">
+
+    <p>Búsqueda: <input type="search" name="busqueda" value=""></p>
+
+    <p>
+        <input type="submit" value="Buscar">
+    </p>
+
+</form>
+
+
+
+@code {
+
+    Producto producto = new Producto();
+
+    protected async Task Grabar()
+    {
+        var respuesta = await Http.PostAsJsonAsync(ApplicationSettings.Current.connApiProducto, producto);
+    }
+    public List<Producto> listaproductos = new List<Producto>();
+
+    protected override async Task OnInitializedAsync() =>
+    listaproductos = await Http.GetFromJsonAsync<List<Producto>>(ApplicationSettings.Current.connApiProducto);
+}

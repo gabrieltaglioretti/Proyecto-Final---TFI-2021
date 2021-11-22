@@ -1,0 +1,34 @@
+﻿@inject I18nText TranslateService
+
+
+<form class="form-inline">
+    @if (LenguajeActual == "es")
+    {<img style="padding-right:7px" src="https://www.certusasesores.com/wp-content/plugins/qtranslate-x/flags/es.png" />}
+    else
+    {<img style="padding-right:7px" src="https://www.certusasesores.com/wp-content/plugins/qtranslate-x/flags/gb.png" />}
+    <select class="form-control form-control" @onchange="CambiarLenguajeActual">
+        <option value="es" selected="@(LenguajeActual == "es")">Español</option>
+        <option value="en" selected="@(LenguajeActual == "en")">English</option>
+    </select>
+</form>
+
+    @code { string LenguajeActual;
+        protected override async Task OnInitializedAsync()
+        {
+            var lang = await TranslateService.GetCurrentLanguageAsync();
+            if (new[] { "en", "es" }.Contains(lang.Split('-')[0]))
+            {
+                LenguajeActual = lang;
+            }
+            else
+            {
+                LenguajeActual = "es";
+            }
+
+        }
+        async Task CambiarLenguajeActual(ChangeEventArgs args)
+        {
+            Console.WriteLine($"OnChange:{args.Value}");
+            LenguajeActual = args.Value as string;
+            await TranslateService.SetCurrentLanguageAsync(LenguajeActual);
+        } }

@@ -1,0 +1,90 @@
+﻿@page "/Logs"
+
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager UriHelper
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@using System.Net.Http
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+@inject IJSRuntime JsRuntime
+
+@inject NavigationManager NavigationManager
+
+
+
+@attribute [Authorize(Policy = "Admin")]
+
+<div class="container">
+    <h1>Bienvenido, @Username!</h1>
+    <small>
+        Autenticado Exitosamente como Administrador de la Aplicacion a traves del servicio provisto por Auth0.
+    </small>
+
+    @*<img src="@Picture">*@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="path/to/file/bootstrap.min.css">
+
+    <p><h3>Bitacora <span class="h5"><i class="fas fa-database"></i></span></h3></p>
+    <hr />
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">FECHA</th>
+                <th scope="col">MENSAJE</th>
+                <th scope="col">SEVERIDAD</th>
+                <th scope="col">TIPO</th>
+                <th scope="col">USUARIO</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var oElement in listabitacoras)
+            {
+<tr>
+    <td>@oElement.fecha</td>
+    <td>@oElement.mensaje</td>
+    <td>@oElement.severidad</td>
+    <td>@oElement.tipo</td>
+    <td>@oElement.usuario</td>
+
+
+</tr>}
+        </tbody>
+    </table>
+</div>
+
+@code { private string Username = "Anonymous User";
+    private string Picture = "";
+
+    string URLBitacora = "https://localhost:44303/api/Bitacora";
+
+    public List<SERVICIOS.BITACORA.DOMINIO.Bitacora> listabitacoras = new List<SERVICIOS.BITACORA.DOMINIO.Bitacora>();
+
+    protected override async Task OnInitializedAsync()
+
+    {
+        listabitacoras = await Http.GetFromJsonAsync<List<SERVICIOS.BITACORA.DOMINIO.Bitacora>>(URLBitacora);
+
+        var state = await AuthState.GetAuthenticationStateAsync();
+
+        Username = state.User.Claims
+                    .Where(c => c.Type.Equals("name"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
+
+        Picture = state.User.Claims
+                    .Where(c => c.Type.Equals("picture"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
+
+        await base.OnInitializedAsync();
+    }
+
+    }
+

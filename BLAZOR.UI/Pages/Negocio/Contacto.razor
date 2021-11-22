@@ -1,0 +1,87 @@
+﻿@page "/Contacto"
+
+<style>
+    body {
+        font-family: 'Lato', sans-serif
+    }
+
+    h1 {
+        margin-bottom: 10px
+    }
+
+    label {
+        color: #333
+    }
+
+    .btn-send {
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        width: 80%;
+        margin-left: 3px
+    }
+
+    .help-block.with-errors {
+        color: #ff5050;
+        margin-top: 5px
+    }
+
+    .card {
+        margin-left: 10px;
+        margin-right: 10px
+    }
+    .colorVerde{
+         background-color:#19d7b1;
+    }
+</style>
+<div class="container">
+    <div class=" text-center mt-5 ">        
+        <h1>Contactanos!</h1>        
+        <img src="Pics/logoVolando.png" style="width:210px; height:60x;" />
+    </div>
+    <div class="row ">
+        <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <div class="card-body bg-light">
+                    <div class="container">
+                        <form id="contact-form" role="form">
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group"> <label for="form_name">Nombre</label> <input id="form_name" type="text" name="name" class="form-control" placeholder="ingrese su nombre..." required="required" data-error="Firstname is required."> </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group"> <label for="form_lastname">Apellido</label> <input id="form_lastname" type="text" name="surname" class="form-control" placeholder="ingrese su apellido..." required="required" data-error="Lastname is required."> </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group"> <label for="form_email">Email</label> <input id="form_email" type="email" name="email" class="form-control" placeholder="ingrese su email..." required="required" data-error="Valid email is required."> </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="form_need">Ayuda acerca</label> <select id="form_need" name="need" class="form-control" required="required" data-error="Please specify your need.">
+                                                <option value="" selected disabled>--Seleccione una opción--</option>
+                                                <option>Informacion sobre mis pedidos</option>
+                                                <option>Quiero trabajar con ustedes</option>
+                                                <option>Solicitud de Cambio</option>
+                                                <option>Otros</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group"> <label for="form_message">Mensaje</label> <textarea id="form_message" name="message" class="form-control" placeholder="escriba su mensaje..." rows="4" required="required" data-error="Please, leave us a message."></textarea> </div>
+                                    </div>
+                                    @*<div class="col-md-12"> <input type="submit" class="btn btn-send pt-2 btn-block" value="Enviar"> </div>*@
+                                    <div class="col-md-12"> <button class="btn pt-2 btn-block colorVerde" value="Enviar">Enviar</button></div>                                    
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> <!-- /.8 -->
+        </div> <!-- /.row-->        
+    </div>
+</div>

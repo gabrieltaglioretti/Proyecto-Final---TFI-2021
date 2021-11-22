@@ -1,0 +1,227 @@
+﻿@page "/AltaProducto"
+
+@using System.Net.Http
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+
+@attribute [Authorize(Policy = "Admin")]
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+
+<style>
+
+    html, body {
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+}
+
+</style>
+
+  
+<EditForm Model="@producto">
+    <div class="container">
+        <h3>Alta Producto</h3>
+        <div class="card">
+            <div class="card-header">               
+            </div>
+            <div class="card-body">
+
+                <div class="row">                            
+                    <div class="col-sm-4">
+                        <label for="basic-url">Nombre</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-bag-plus-fill"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.nombre" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label for="basic-url">SKU</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-journal-code"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.SKU" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label for="basic-url">Precio</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-credit-card-2-front-fill"></i></span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="" aria-label="" @bind="producto.precio" required>
+                        </div>
+                    </div>
+                </div>     
+            
+            
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="basic-url">Marca</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-bag-plus-fill"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.marca" required>
+                        </div>
+                    </div>
+            
+           
+                    <div class="col-sm-4">
+                        <label for="basic-url">Modelo</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-bag-plus-fill"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.modelo" required>
+                        </div>
+                    </div>           
+
+        
+                    <div class="col-sm-4">
+                        <label for="basic-url">Genero</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-bag-plus-fill"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.genero" required>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="basic-url">Descripcion</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-textarea-resize"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.descripcion" required>
+                        </div>
+                    </div>
+            
+            
+                    <div class="col-sm-4">
+                        <label for="basic-url">Activo</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-shield-fill-check"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.activo" required>
+                        </div>
+                    </div>
+            
+           
+                    <div class="col-sm-4">
+                        <label for="basic-url">Talle</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-bag-plus-fill"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.talle" required>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="basic-url">Color</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-circle-half"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" aria-label="" @bind="producto.color" required>
+                        </div>
+                    </div>
+            
+           
+                    <div class="col-sm-4">
+                        <label for="basic-url">Stock</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-bag-plus-fill"></i></span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="" aria-label="" @bind="producto.stock" required>
+                        </div>
+                    </div>
+
+                
+                    <p>Talle</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                        <label class="form-check-label" for="inlineRadio1">S</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                        <label class="form-check-label" for="inlineRadio2">M</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                        <label class="form-check-label" for="inlineRadio3">L</label>
+                    </div>
+                </div>
+            
+
+                <p>Imagenes</p>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                            <label class="custom-file-label" for="customFileLang">Seleccionar imagen1</label>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                            <label class="custom-file-label" for="customFileLang">Seleccionar imagen2</label>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                            <label class="custom-file-label" for="customFileLang">Seleccionar imagen3</label>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <button class="btn btn-primary btn-block" @onclick="Grabar">Cargar Producto</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    Producto producto = new Producto();
+
+    protected async Task Grabar()
+    {
+        producto.idPrecio  = 832123332;
+        producto.createdOn = DateTime.Now;
+        producto.createdBy = Guid.NewGuid().ToString();
+        producto.changedOn = DateTime.Now;
+        producto.changedBy = Guid.NewGuid().ToString();
+        producto.idProveedor = 832123332;
+        producto.idCategoria = 832123332;
+        producto.idDescuento = 832123332;
+        producto.picturePath = Guid.NewGuid().ToString();
+        producto.pictureName = Guid.NewGuid().ToString();
+        producto.ranking = Guid.NewGuid().ToString();
+        producto.observaciones = Guid.NewGuid().ToString();
+
+        var respuesta = await Http.PostAsJsonAsync(ApplicationSettings.Current.connApiProducto, producto);
+    }
+
+    ////public List<Producto> listaproductos = new List<Producto>();
+
+    //protected override async Task OnInitializedAsync() =>
+    //listaproductos = await Http.GetFromJsonAsync<List<Producto>>(ApplicationSettings.Current.connApiProducto);
+}

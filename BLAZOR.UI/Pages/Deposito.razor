@@ -1,0 +1,143 @@
+﻿@*@page "/Deposito"
+
+@using System.Net.Http
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+@inject NavigationManager NavigationManager
+
+
+
+<link rel="stylesheet" href="path/to/file/bootstrap.min.css">
+
+<EditForm Model="@cuentaDepositar">
+    <div class="container-fluid">
+        <h3 class="text-muted h3">Deposito</h3>
+        <div class="container-fluid">
+            <br />
+        </div>
+        <div class="row">
+            <div class="container-fluid">
+                <div class="form-group row mb-1">
+                    <label class="col-sm-12">Importe a depositar</label>
+                    <div class="col-sm-12">
+                        <div class="input-group flex-nowrap">
+                            <span class="input-group-text" id="basic-addon1">$</span>
+                            <InputNumber class="form-control" @bind-Value="@importe"></InputNumber>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <br />
+            </div>
+            <div class="container-fluid">
+                <div class="form-group row mb-6">
+                    <label class="col-sm-6 ">Identificador Cuenta</label>
+                    <div class="col-sm-12">
+                        <InputSelect class="form-control" @bind-Value="@IdFidusuaria">
+                            <option value="">seleccione una cuenta</option>
+                            @if (oRespuesta != null)
+                             {
+                                @foreach (var cuenta_seleccionada in oRespuesta)
+                                {
+                                    <option value="@cuenta_seleccionada.IdCuenta.ToString()">Tipo: @cuenta_seleccionada.TipoCuenta | Identificador: @cuenta_seleccionada.Saldo</option>}
+
+                                @foreach (var cuenta_seleccionada in oRespuesta)
+                                 {
+                                    <option value="@cuenta_seleccionada.IdCuenta.ToString()">Tipo: @cuenta_seleccionada.CBU | Identificador: @cuenta_seleccionada.Alias</option>}
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <br />
+            </div>
+            <div class="container-fluid">
+                <div class="form-group row mb-12">
+                    <div class="col-sm-12">
+                        <button class="btn btn-secondary btn-block" @onclick="Depositar">Depositar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</EditForm>
+
+@code
+{   
+    public string URL = "https://localhost:44303/api/Fidusuaria";
+
+    Favorito cuentaDepositar = new Favorito();
+
+    public string IdFidusuaria = "0";
+    public decimal importe = 0;
+
+    public List<Favorito> oRespuesta = new List<Favorito>();
+
+    Favorito cuenta = new Favorito();
+
+
+
+
+    //CODIGO NUTRICIION DEL DROPDOWNLIST
+    protected override async Task OnInitializedAsync()
+    {
+        oRespuesta = await Http.GetFromJsonAsync<List<Favorito>>(URL);
+    }
+
+
+
+    protected async void GrabarOperacion()
+    {
+        string URLTransac = "https://localhost:44303/api/transacciones";
+
+        Remito transaccion = new Remito();
+
+        transaccion.FechaHora = DateTime.Now;
+        transaccion.CuentaDestino = cuenta;
+        transaccion.CuentaOrigen = cuenta;
+        transaccion.Monto = importe;
+        transaccion.TipoOperacion = "DEPOSITO";
+
+
+        var responseTransaccion = await Http.PostAsJsonAsync<Remito>(URLTransac, transaccion);
+    }
+
+    //FUNCION DEPOSITAR
+
+    private async Task Depositar()
+    {
+
+        List<Favorito> oRespuestaPesos = new List<Favorito>();
+
+
+        oRespuestaPesos = await Http.GetFromJsonAsync<List<Favorito>>(URL + "/" + IdFidusuaria);
+
+
+        cuenta = oRespuestaPesos.First();
+
+
+        //ACTUALIZA EL SALDO DE LA CUENTA SELECCIONADA
+        decimal saldo_anterior = cuenta.Saldo;
+        cuenta.Saldo = (importe + saldo_anterior);
+
+        /////////////////////////////////////////////////////////////////////////////////
+
+
+        //ENVIA LA PETICION PUT MEDIANTE OBJETO CUENTA IMPACTANDO EN EL CAMPO SALDO DE LA CUENTA SELECCIONADA
+        var responsePesos = await Http.PutAsJsonAsync<Factura>(URL, cuenta);
+        //oRespuestaPesos = responsePesos.Content.ReadFromJsonAsync<Cuenta>().Result;
+
+        GrabarOperacion();
+
+        //VUELVE AL MENU PRINCIPAL
+        NavigationManager.NavigateTo("/");
+
+    }
+
+}*@
+
+

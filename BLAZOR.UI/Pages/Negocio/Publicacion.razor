@@ -1,0 +1,322 @@
+﻿@page "/Publicacion/{id:int}"
+
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager UriHelper
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Http
+@using System.Net.Http
+
+@using BLL
+@using SERVICIOS.BITACORA.DOMINIO
+@using SERVICIOS.SEGURIDAD.DOMINIO
+
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<br />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .score {
+        display: block;
+        font-size: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .score-wrap {
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        height: 19px;
+    }
+
+    .score .stars-active {
+        color: #EEBD01;
+        position: relative;
+        z-index: 10;
+        display: inline-block;
+    }
+
+    .score .stars-inactive {
+        color: grey;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-text-stroke: initial;
+        overflow: hidden;
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+    <title>TFI 2021 - Volando E-Shop</title>
+</head>
+<div class="container">
+    <h1>Detalle Producto</h1><hr />
+    <section class="mb-5">
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div id="mdb-lightbox-ui"></div>
+                <div class="mdb-lightbox">
+                    <div class="row product-gallery mx-1">
+                        <div class="col-12 mb-0">
+                            <figure class="view overlay rounded z-depth-1 main-img">
+                                <a href="@producto.picturePath"
+                                   data-size="710x823">
+                                    <img src="@producto.picturePath"
+                                         class="img-fluid z-depth-1">
+                                </a>
+                            </figure>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item">
+                                        <img src="@producto.picturePath"
+                                             class="img-fluid">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item">
+                                        <img src="@producto.picturePath1"
+                                             class="img-fluid">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item">
+                                        <img src="@producto.picturePath2"
+                                             class="img-fluid">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>                                
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item">
+                                        <img src="@producto.picturePath3"
+                                             class="img-fluid">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>                        
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h5><strong>@producto.nombre</strong></h5>
+                <p class="mb-2 text-muted text-uppercase small">Remeras</p>
+                <span class="score">
+                    <div class="score-wrap">
+                        <span class="stars-active" style="width:88%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </span>
+                        <span class="stars-inactive">
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </span>
+                <p><span class="mr-1"><strong>Precio: $@producto.precio.-</strong></span></p>
+                <p class="pt-1 font-weight-light">
+                    Excelente Producto de la marca reconocida. Disponible en varios talles y colores con disponibilidad de entrega inmediata
+                    retirando por nuestros locales comerciales.
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-sm table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>MODELO</strong></th>
+                                <td>@producto.modelo</td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>COLOR</strong></th>
+                                <td>@producto.color</td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>ENVÍO/RETIRO</strong></th>
+                                <td> <small>Finalizá tu compra y elegí si querés recibirla en tu domicilio o retirarla, en forma gratuita, por Almagro, Belgrano, Cañitas o Villa Crespo de lunes a viernes de 10 a 17hs o sábados de 10 a 15hs.</small></td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>CAMBIOS Y DEVOLUCIONES</strong></th>
+                                <td>
+                                    <small>
+                                        Los cambios en local se pueden hacer dentro de los 30 días una vez realizada la compra presentando ticket.
+                                        La devolución de tu compra se realiza dentro de los 10 días una vez que se te haya entregado el producto. Para ello, debés mandar un mail a tienda@galponderopa.com.
+                                        Para más información, hacé click acá y leé nuestras Políticas de Reembolso.
+                                    </small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="table-responsive mb-2">
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="pl-0 pb-0 w-25"><strong>Cantidad</strong></td>
+                                <td class="pb-0"><strong>Seleccione el Talle</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="pl-0">
+                                    <div class="def-number-input number-input safari_only mb-0">
+                                        @*<button onclick="this.parentNode.querySelector(@cantidad).stepDown()" class="minus">-</button>*@
+                                        <input class="quantity" min="0" name="quantity" value="1" type="number">
+                                        @*<button onclick="this.parentNode.querySelector(@cantidad).stepUp()" class="plus">+</button>*@
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mt-1">
+                                        <div class="form-check form-check-inline pl-0">
+                                            <input type="radio" class="form-check-input" id="small" name="materialExampleRadios"
+                                                   checked>
+                                            <label class="form-check-label small text-uppercase card-link-secondary"
+                                                   for="small">Small</label>
+                                        </div>
+                                        <div class="form-check form-check-inline pl-0">
+                                            <input type="radio" class="form-check-input" id="medium" name="materialExampleRadios">
+                                            <label class="form-check-label small text-uppercase card-link-secondary"
+                                                   for="medium">Medium</label>
+                                        </div>
+                                        <div class="form-check form-check-inline pl-0">
+                                            <input type="radio" class="form-check-input" id="large" name="materialExampleRadios">
+                                            <label class="form-check-label small text-uppercase card-link-secondary"
+                                                   for="large">Large</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a class="btn btn-light btn-md mr-1 mb-2" @onclick="AgregarItemCarrito"><i class="fas fa-shopping-cart pr-2"></i>Agregar al Carrito »</a>
+                @*<a class="btn btn-light btn-md mr-1 mb-2" href="Cart/1"><i class="fas fa-shopping-cart pr-2"></i>Agregar al Carrito »</a>
+                    <a class="btn btn-light btn-md mr-1 mb-2" href="Cart"><i class="fas fa-credit-card pr-2"></i>Comprar »</a>*@
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    string NameFromSessionStorage { get; set; }
+
+    Carrito carrito = new Carrito();
+
+    List<CarritoItem> linesItems = new List<CarritoItem>();
+
+    List<Producto> productos = new List<Producto>();
+
+    Bitacora bitacora = new Bitacora();
+
+    Producto producto = new Producto();
+
+    public string sesionId;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        productos = await Http.GetFromJsonAsync<List<Producto>>(ApplicationSettings.Current.connApiProducto + "/" + id);
+
+        producto = productos.First();
+    }
+
+
+    protected async Task AgregarItemCarrito()
+    {
+
+        //TOMO LA SESION QUE GENERE EN EL INDEX
+        await GetNameFromSessionStorage();
+        carrito.idSesion = NameFromSessionStorage;
+
+        //CONSULTO POR LA EXISTENCIA DE UN CARRITO CON EL NOMBRE DE LA SESION
+        List<Carrito> UserCartList = new List<Carrito>();
+        UserCartList = CarritoBLL.GetUserCart(carrito.idSesion).ToList();
+
+
+        //PREGUNTO SI EXISTE UN CARRITO CON EL ID DE LA SESION DEL USUARIO, SI ESTA EN CERO LA LISTA CREA UNO NUEVO
+        if (UserCartList.Count == 0)
+
+        {
+            //CARGO EL CARRITO
+            CarritoItem lineItem = new CarritoItem();
+            lineItem.producto = producto;
+            lineItem.cantidad = 1;//TOMAR LA CANTIDAD DESDE EL HTML
+            linesItems.Add(lineItem);
+            carrito.carritoItems = linesItems;
+
+            //GENERA EL CARRITO
+            var respuesta = await Http.PostAsJsonAsync(ApplicationSettings.Current.connApiCarrito, carrito);
+
+            //OBTENER  EL ID DEL CARRITO CREADO.
+            carrito.idCarrito = CarritoBLL.GetUserCart(carrito.idSesion).First().idCarrito;
+
+            #region Bitacora
+            bitacora.fecha = DateTime.Now;
+            bitacora.mensaje = "Se agrego el Producto " + producto.nombre + " al Carrito Numero " + carrito.idCarrito;
+            bitacora.severidad = Bitacora.Severidad.INFO;
+            bitacora.usuario = "gabrieltaglioretti@gmail.com";
+            bitacora.tipo = Bitacora.TipoLog.NEGOCIO;
+            var respuestabitacora = await Http.PostAsJsonAsync(ApplicationSettings.Current.connApiBitacora, bitacora);
+            #endregion
+
+            //NECESITA EL IDCARRITO PARA IR A LA VISTA CARRITO
+            NavigationManager.NavigateTo("Cart/" + carrito.idCarrito);
+
+        }
+
+        else
+
+        {
+            
+            carrito.idCarrito = CarritoBLL.GetUserCart(carrito.idSesion).First().idCarrito;
+
+            //CARGO EL CARRITO
+            CarritoItem lineItem = new CarritoItem();
+            lineItem.producto = producto;
+            lineItem.cantidad = 1;//TOMAR LA CANTIDAD DESDE EL HTML
+            linesItems.Add(lineItem);
+            carrito.carritoItems = linesItems;
+
+            var respuesta = await Http.PutAsJsonAsync(ApplicationSettings.Current.connApiCarrito, carrito);
+
+            NavigationManager.NavigateTo("Cart/" + carrito.idCarrito);
+
+        }
+
+
+    }
+
+
+    async Task GetNameFromSessionStorage()
+    {
+        NameFromSessionStorage = await sessionStorage.GetItemAsync<string>("name");
+
+        if (string.IsNullOrEmpty(NameFromSessionStorage))
+        {
+            NameFromSessionStorage = "Nothing Saved";
+        }
+    }
+
+
+
+}
