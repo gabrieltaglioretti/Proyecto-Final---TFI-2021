@@ -22,7 +22,6 @@ namespace SERVICIOS.BITACORA.DAL
             get => "INSERT INTO [dbo].[Bitacora] "
                 + "(Fecha, Mensaje, Usuario, Id_Severidad, Id_Tipo) "
                 + "VALUES (@Fecha, @Mensaje, @Usuario, @Id_Severidad, @Id_Tipo)";
-
         }
         private static string SelectAll
         {

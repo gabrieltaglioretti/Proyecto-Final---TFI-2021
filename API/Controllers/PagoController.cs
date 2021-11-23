@@ -55,9 +55,9 @@ namespace API.Controllers
                 },
                 BackUrls = new PreferenceBackUrlsRequest
                 {
-                    Success = "https://localhost:44362/Gracias/"+ item.id, 
-                    Failure = "https://localhost:44362/Gracias/" + item.id,
-                    Pending = "https://localhost:44362/Gracias/" + item.id,
+                    Success = "https://appvolando.azurewebsites.net/Gracias/" + item.id, 
+                    Failure = "https://appvolando.azurewebsites.net/Gracias/" + item.id,
+                    Pending = "https://appvolando.azurewebsites.net/Gracias/" + item.id,
                 },
                 AutoReturn = "approved",
 

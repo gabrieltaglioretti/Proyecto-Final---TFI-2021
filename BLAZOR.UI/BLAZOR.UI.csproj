@@ -6,6 +6,13 @@
 
   <ItemGroup>
     <Content Remove="Pages\Deposito.razor" />
+    <Content Remove="wwwroot\Configuration.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Configuration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +35,15 @@
     <Content Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Configuration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Configuration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

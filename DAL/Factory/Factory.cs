@@ -2,13 +2,11 @@
 using DOMAIN;
 using System;
 using System.Configuration;
-using Microsoft.Extensions.Configuration;
-using System.IO;
 using SERVICIOS;
 
 namespace DAL.Factory
 {
-	public sealed class Factory
+    public sealed class Factory
 	{
 
 		#region Singleton
@@ -24,9 +22,7 @@ namespace DAL.Factory
 		}
 		#endregion
 
-		//PROBANDO TOMAR EL DATO DESDE EL .JSON
-		//private static readonly IConfiguration _configuration;
-		//string myDb1ConnectionString = _configuration.GetConnectionString("ApplicationDB");
+
 
 
 		public IRepositoryCarrito<Carrito> GetRepositoryCarrito()
@@ -61,16 +57,6 @@ namespace DAL.Factory
 
 		}
 
-		public IRepositoryFavorito<Favorito> GetRepositoryFavorito()
-		{
-
-			string namespacename = ConfigurationManager.AppSettings["RepositorioSQL"] + ".FavoritoRepository";
-
-			object instancia = Activator.CreateInstance(Type.GetType(namespacename));
-
-			return (IRepositoryFavorito<Favorito>)instancia;
-
-		}
 		public IRepositoryPedido<Pedido> GetRepositoryPedido()
 		{
 
@@ -92,17 +78,6 @@ namespace DAL.Factory
 			return (IRepositoryProducto<Producto>)instancia;
 
 		}
-		public IRepositoryPromocion<Promocion> GetRepositoryPromocion()
-		{
-
-			string namespacename = ConfigurationManager.AppSettings["RepositorioSQL"] + ".PromocionRepository";
-
-			object instancia = Activator.CreateInstance(Type.GetType(namespacename));
-
-			return (IRepositoryPromocion<Promocion>)instancia;
-
-		}
-
 
 		public IRepositoryProductoNoSQL<Producto> GetRepositoryProductoNoSQL()
 		{

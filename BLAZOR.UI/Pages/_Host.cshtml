@@ -48,14 +48,23 @@
 <script src="_content/Microsoft.AspNetCore.ProtectedBrowserStorage/protectedBrowserStorage.js"></script>
 
     <script src="https://sdk.mercadopago.com/js/v2"></script>
-
+    <script src="https://apps.elfsight.com/p/platform.js"autostart="false"></script>
+    <script src="https://kit.fontawesome.com/eb496ab1a0.js" crossorigin="anonymous"></script>
     <script>        
         //const idRetornado = '84605397-d3d2e496-6cda-4af3-8b90-f8515159080a';
+        //Agrega credenciales de SDK     
 
-        //Agrega credenciales de SDK
-  
 
     </script>    
+
+       <script>   
+      Blazor.start().then(function () {
+        var customScript = document.createElement('script');
+        customScript.setAttribute('src', 'scripts.js');
+        document.head.appendChild(customScript);
+      });
+    </script>
+
 
 </body>
 </html>

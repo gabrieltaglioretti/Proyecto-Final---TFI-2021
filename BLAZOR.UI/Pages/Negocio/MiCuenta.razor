@@ -1,0 +1,273 @@
+﻿@page "/MiCuenta"
+
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager UriHelper
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@*@attribute [Authorize]*@
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+<style>  
+
+    .card-header {
+        margin-bottom: 0;
+        @*padding: 1.25rem 1.5rem;*@
+        border-bottom: 1px solid rgba(0, 0, 0, .05);
+        @*background-color: #fff;*@
+    }
+
+        .card-header:first-child {
+            border-radius: calc(.375rem - 1px) calc(.375rem - 1px) 0 0;
+        }
+
+    @@keyframes progress-bar-stripes {
+        from {
+            background-position: 1rem 0;
+        }
+
+        to {
+            background-position: 0 0;
+        }
+    }
+
+    .bg-secondary {
+        background-color: #f7fafc !important;
+    }
+
+    a.bg-secondary:hover,
+    a.bg-secondary:focus,
+    button.bg-secondary:hover,
+    button.bg-secondary:focus {
+        background-color: #d2e3ee !important;
+    }
+
+    .bg-default {
+        background-color: #172b4d !important;
+    }
+
+    
+
+    @@media (min-width: 1200px) {
+        .justify-content-xl-between {
+            justify-content: space-between !important;
+        }
+    }
+
+    .shadow {
+        box-shadow: 0 0 2rem 0 rgba(136, 152, 170, .15) !important;
+    }
+
+    .mb-0 {
+        margin-bottom: 0 !important;
+    }
+
+    .my-4 {
+        margin-top: 1.5rem !important;
+    }
+
+    .mb-4,
+    .my-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mb-5 {
+        margin-bottom: 3rem !important;
+    }
+
+
+
+
+    a.bg-white:hover,
+    a.bg-white:focus,
+    button.bg-white:hover,
+    button.bg-white:focus {
+        background-color: #e6e6e6 !important;
+    }
+
+    @@keyframes floating-lg {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(15px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    @@keyframes floating {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(10px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    @@keyframes floating-sm {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(5px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    [class*='shadow'] {
+        transition: all .15s ease;
+    }
+
+    .btn {
+        font-size: .875rem;
+        position: relative;
+        transition: all .15s ease;
+        letter-spacing: .025em;
+        text-transform: none;
+        will-change: transform;
+    }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+        }
+
+        .btn:not(:last-child) {
+            margin-right: .5rem;
+        }
+
+    .btn-sm {
+        font-size: .75rem;
+    }
+
+    [class*='btn-outline-'] {
+        border-width: 1px;
+    }
+
+    .main-content {
+        position: relative;
+    }
+
+   
+
+
+</style>
+
+<body>
+    <div class="container">
+        <h2>Mi Cuenta</h2><hr />
+        <div class="main-content">
+            <div class="container mt-7">
+                <!-- Table -->
+                <div class="row">
+                    <div class="col-xl-8 m-auto order-xl-1">
+                        <div class="card bg-secondary shadow">
+                            <div class="card-header bg-white border-0">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h5 class="mb-0">Mis datos</h5>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a href="#!" class="btn btn-primary">Actualizar Informaci&oacute;n</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <h6 class="heading-small text-muted mb-4">Informaci&oacute;n</h6>
+                                    <div class="pl-lg-4">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group focused">
+                                                    <label class="form-control-label" for="input-username">Usuario</label>
+                                                    <input type="text" id="input-username" class="form-control form-control-alternative" placeholder="Username" value="gabriel">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-control-label" for="input-email">Email</label>
+                                                    <input type="email" id="input-email" class="form-control form-control-alternative" placeholder="gabriel@ejemplo.com">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group focused">
+                                                    <label class="form-control-label" for="input-first-name">Nombre</label>
+                                                    <input type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="First name" value="Gabriel">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group focused">
+                                                    <label class="form-control-label" for="input-last-name">Apellido</label>
+                                                    <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Last name" value="Taglioretti">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-4">
+                                    <!-- Address -->
+                                    <h6 class="heading-small text-muted mb-4">Informaci&Oacute;n de Contacto</h6>
+                                    <div class="pl-lg-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group focused">
+                                                    <label class="form-control-label" for="input-address">Direccion</label>
+                                                    <input id="input-address" class="form-control form-control-alternative" placeholder="Home Address" value="" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group focused">
+                                                    <label class="form-control-label" for="input-city">Ciudad</label>
+                                                    <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="City" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group focused">
+                                                    <label class="form-control-label" for="input-country">Pais</label>
+                                                    <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="Country" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label class="form-control-label" for="input-country">Codigo Postal</label>
+                                                    <input type="number" id="input-postal-code" class="form-control form-control-alternative" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-4">
+                                    <!-- Description -->
+                                    <h6 class="heading-small text-muted mb-4">Acerca de m&iacute;</h6>
+                                    <div class="pl-lg-4">
+                                        <div class="form-group focused">
+                                            <label>Qui&eacute;n soy</label>
+                                            <textarea rows="4" class="form-control form-control-alternative" placeholder=""></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

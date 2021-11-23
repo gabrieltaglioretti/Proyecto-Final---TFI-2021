@@ -25,5 +25,11 @@
     <ProjectReference Include="..\SERVICES\SERVICIOS.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Configuration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>

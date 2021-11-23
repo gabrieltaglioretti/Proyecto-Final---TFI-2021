@@ -110,7 +110,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ValidarURL();
+        await ValidarURL();
+
         pedidos = await Http.GetFromJsonAsync<List<Pedido>>(ApplicationSettings.Current.connApiPedido);
 
         pedido = pedidos.Where<Pedido>((x => x.idPedido == id)).ToList().First();
@@ -135,11 +136,12 @@
         }
     }
 
-    async Task ValidarURL()
+     async Task ValidarURL()
     {
         if (MyNavigationManager.Uri.ToString().Contains("?"))
         {
             NavigationManager.NavigateTo("Gracias/" + id);
+
         }
 
     }
