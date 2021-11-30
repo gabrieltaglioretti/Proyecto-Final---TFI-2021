@@ -1,0 +1,9 @@
+﻿C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\Carrito.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\CarritoItem.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\Categoria.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\Compra.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\Cuenta.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\MP.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\Pago.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\Pedido.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\DOMAIN\Producto.cs
