@@ -11,8 +11,7 @@ namespace SERVICIOS.SEGURIDAD.DAL
     public static class UsuarioDAL
     {
         //Conexión Servicios
-        private static string cnnSeguridad = ApplicationSettings.Current.connSeguridadLocal;
-        //private static string repoImagenes = ApplicationSettings.Current.RepoImagenes;
+        private static string cnnSeguridad = ApplicationSettings.Current.connSeguridadDB;
 
 
         //Statements
@@ -38,50 +37,7 @@ namespace SERVICIOS.SEGURIDAD.DAL
         }
 
 
-        public static void AgregarUsuario(Usuario usuario)
-        {
-            try
-            {
-                using (SqlConnection sqlConn = new SqlConnection(cnnSeguridad))
-                {
-                    try
-                    {
-                        sqlConn.Open();
-
-                        using (SqlCommand cmd = new SqlCommand(InsertStatement, sqlConn))
-                        {
-                            cmd.CommandType = CommandType.Text;
-
-                            cmd.Parameters.AddWithValue("IdUsuario", usuario.idUsuario);
-                            cmd.Parameters.AddWithValue("Nombre", usuario.nombreusuario);
-                            cmd.Parameters.AddWithValue("Password", usuario.contraseña);
-                            cmd.Parameters.AddWithValue("Activo", usuario.estado);
-                            cmd.Parameters.AddWithValue("DVH", usuario.DVH);
-                            cmd.Parameters.AddWithValue("Apellido", usuario.apellido);
-                            cmd.Parameters.AddWithValue("Departamento", usuario.departamento);
-                            cmd.Parameters.AddWithValue("Foto", "81-DC-9B-DB-52-D0-4D-C2-00-36-DB-D8-31-3E-D0-55");
-                            cmd.Parameters.AddWithValue("Correo", usuario.correo);
-                            cmd.Parameters.AddWithValue("CentroCostos", usuario.centrocostos);
-
-
-                            cmd.ExecuteScalar();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                    finally
-                    {
-                        sqlConn.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        
 
         public static bool BuscarUsuario(Usuario usuario)
         {
@@ -196,12 +152,7 @@ namespace SERVICIOS.SEGURIDAD.DAL
             }
         }
 
-        //public static Image GetUserImage(string username)         
-        //{
-        //    //Image userImg = Image.FromFile(repoImagenes + @"USUARIOS\" + username + ".PNG");
 
-        //    return userImg;
-        //}
     }
 }
 

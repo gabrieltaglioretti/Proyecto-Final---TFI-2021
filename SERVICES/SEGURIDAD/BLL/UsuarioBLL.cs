@@ -1,7 +1,6 @@
 ﻿using System;
 using SERVICIOS.SEGURIDAD.DAL;
 using SERVICIOS.SEGURIDAD.DOMINIO;
-using SERVICIOS.INTEGRIDAD;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -32,23 +31,6 @@ namespace SERVICIOS.SEGURIDAD.BLL
             }
         }
 
-        public static void AgregarUsuario(Usuario usuario)
-         {
-             try
-             {
-                IntegridadBLL.AgregarHash(usuario);
-
-                UsuarioDAL.AgregarUsuario(usuario);
-
-                IntegridadBLL.ActualizarDVV();
-             }
-
-            catch (Exception ex)
-
-             {
-              throw ex;
-             }
-         }
 
         private static string user;
         private static string idiomaUsuario = "es-ES";

@@ -1,0 +1,7 @@
+﻿C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\BLL\CarritoBLL.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\BLL\CategoriaBLL.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\BLL\CompraBLL.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\BLL\CuentaBLL.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\BLL\PagoBLL.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\BLL\PedidoBLL.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\BLL\ProductoBLL.cs

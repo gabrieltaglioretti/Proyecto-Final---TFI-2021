@@ -13,8 +13,6 @@
     <Compile Remove="INTEGRIDAD\**" />
     <Compile Remove="LOGIN\**" />
     <Compile Remove="NOTIFICACIONES\**" />
-    <Compile Remove="SEGURIDAD\BLL\**" />
-    <Compile Remove="SEGURIDAD\DAL\**" />
     <Compile Remove="TRADUCCION\**" />
     <EmbeddedResource Remove="BACKUP\**" />
     <EmbeddedResource Remove="BORRAR\**" />
@@ -22,8 +20,6 @@
     <EmbeddedResource Remove="INTEGRIDAD\**" />
     <EmbeddedResource Remove="LOGIN\**" />
     <EmbeddedResource Remove="NOTIFICACIONES\**" />
-    <EmbeddedResource Remove="SEGURIDAD\BLL\**" />
-    <EmbeddedResource Remove="SEGURIDAD\DAL\**" />
     <EmbeddedResource Remove="TRADUCCION\**" />
     <None Remove="BACKUP\**" />
     <None Remove="BORRAR\**" />
@@ -31,16 +27,11 @@
     <None Remove="INTEGRIDAD\**" />
     <None Remove="LOGIN\**" />
     <None Remove="NOTIFICACIONES\**" />
-    <None Remove="SEGURIDAD\BLL\**" />
-    <None Remove="SEGURIDAD\DAL\**" />
     <None Remove="TRADUCCION\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="PARAMETRIZACION\ApplicationSettingsJson.cs" />
-    <Compile Remove="SEGURIDAD\DOMINIO\Familia.cs" />
-    <Compile Remove="SEGURIDAD\DOMINIO\FamiliaComponent.cs" />
-    <Compile Remove="SEGURIDAD\DOMINIO\Patente.cs" />
   </ItemGroup>
 
   <ItemGroup>

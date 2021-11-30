@@ -1,0 +1,20 @@
+﻿C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\BitacoraController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\CarritoController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\CategoriaController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\CompraController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\CuentaController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\PagoController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\PedidoController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Controllers\ProductoController.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Program.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Startup.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\obj\Debug\netcoreapp3.1\.NETCoreApp,Version=v3.1.AssemblyAttributes.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\obj\Debug\netcoreapp3.1\API.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\obj\Debug\netcoreapp3.1\API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\appsettings.Development.json
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\appsettings.json
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Configuration.xml
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Properties\launchSettings.json
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Properties\serviceDependencies.json
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Properties\ServiceDependencies\APIVOLANDO - Web Deploy\profile.arm.json
+C:\Users\Administrator\Desktop\TFI - Copy\Proyecto Final TFI 2021\API\Properties\PublishProfiles\APIVOLANDO - Web Deploy.pubxml
